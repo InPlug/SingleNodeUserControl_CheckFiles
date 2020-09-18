@@ -1,0 +1,260 @@
+﻿<base:DynamicUserControlBase x:Class="SingleNodeUserControl_CheckFiles.SingleNodeUserControl_CheckFiles"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:base="clr-namespace:Vishnu.Interchange;assembly=Vishnu.Interchange"
+             xmlns:checkerDll="clr-namespace:FileChecker;assembly=FileChecker"
+             xmlns:local="clr-namespace:UserNodeControls;assembly=SingleNodeUserControl_CheckFiles"
+             xmlns:ctrl="clr-namespace:NetEti.CustomControls;assembly=CustomProgressBar"
+             xmlns:convert="clr-namespace:Vishnu.WPF_UI.ValueConverter;assembly=Vishnu.WPF_UI"
+             xmlns:vm="clr-namespace:Vishnu.ViewModel;assembly=Vishnu.ViewModel"
+             xmlns:int="clr-namespace:Vishnu.Interchange;assembly=Vishnu.Interchange"
+             xmlns:attached="clr-namespace:Vishnu.WPF_UI.DependencyProperties;assembly=Vishnu.WPF_UI"
+             xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
+             mc:Ignorable="d"
+             >
+    <base:DynamicUserControlBase.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Vishnu.WPF_UI;component/Assets/LogicalTaskTreeControlStaticResourceDictionary.xaml" />
+                <ResourceDictionary Source="/Vishnu.WPF_UI;component/Assets/LogicalTaskTreeControlResourceDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <convert:NullableBoolToBrush x:Key="nullableBoolToBrush" />
+            <convert:ChildOrientationToExpandDirection x:Key="childOrientationToExpandDirection" />
+            <convert:VisualNodeWorkerStateToText x:Key="workersStateToText" />
+            <convert:VisualNodeStateToBitmapImage x:Key="visualNodeStateToBitmapImage" />
+            <convert:NotEmptyToTrue x:Key="notEmptyToTrue" />
+            <x:Code>
+                <![CDATA[
+                                    private void ItemBorder_MouseDown(object sender, MouseButtonEventArgs e)
+                                    {
+                                        Console.WriteLine("border1_MouseDown");
+                                        e.Handled = true; // Console.WriteLine("border1_MouseDown: setting e.Handled to true.");
+                                    }
+                                ]]>
+            </x:Code>
+            <DataTemplate DataType="{x:Type vm:VishnuViewModelBase}">
+                <Border Name="ItemBorder" Background="Transparent" MouseDown="ItemBorder_MouseDown" Visibility="{Binding Visibility}">
+                    <Grid ToolTip="{Binding NextRunInfoAndResult}" ToolTipService.ShowDuration="6000"
+                          ToolTipService.InitialShowDelay="1500">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0" Grid.Column="0" Margin="0,5,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <ctrl:CustomProgressBar Grid.Row="0" Grid.Column="0" Name="cpBar" Value="{Binding Path=SingleNodesFinished}"
+                                                    Text="{Binding Path=ProgressText}"
+                                                    Height="22" Width="60" Padding="5">
+                                <ctrl:CustomProgressBar.Foreground>
+                                    <MultiBinding Converter="{StaticResource nullableBoolToBrush, diag:PresentationTraceSources.TraceLevel=High}">
+                                        <Binding Path="Logical" />
+                                        <Binding RelativeSource="{RelativeSource Self}" />
+                                    </MultiBinding>
+                                </ctrl:CustomProgressBar.Foreground>
+                            </ctrl:CustomProgressBar>
+                            <Grid Margin="4,7,4,7" Grid.Row="0" Grid.Column="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Button Name="btnRunLogicalTaskTree" Grid.Column="0" Visibility="Hidden"
+                                         Padding="5,0,5,0" Width="34"
+                                    Command="{Binding RunLogicalTaskTree, diag:PresentationTraceSources.TraceLevel=High}"
+                                    FontSize="8">
+                                    <Button.Content>
+                                        <Binding Path="ButtonRunText" />
+                                    </Button.Content>
+                                </Button>
+                                <Button Name="btnBreakLogicalTaskTree" Grid.Column="1" Visibility="Hidden"
+                                        Padding="5,0,5,0"
+                                    Command="{Binding BreakLogicalTaskTree, diag:PresentationTraceSources.TraceLevel=High}"
+                                    FontSize="8">
+                                    <Button.Content>
+                                        <Binding Path="ButtonBreakText" />
+                                    </Button.Content>
+                                </Button>
+                            </Grid>
+                            <Ellipse Name="ColorRing" Grid.Row="0" Grid.Column="1" Margin="3"
+                                 Width="{DynamicResource ColorRing.Width}"
+                                 Height="{DynamicResource ColorRing.Width}">
+                                <Ellipse.Fill>
+                                    <MultiBinding Converter="{StaticResource nullableBoolToBrush, diag:PresentationTraceSources.TraceLevel=High}">
+                                        <Binding Path="Logical" />
+                                        <Binding RelativeSource="{RelativeSource Self}" />
+                                    </MultiBinding>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                            <Ellipse Name="ColorPoint" Grid.Row="0" Grid.Column="1" Margin="3"
+                                 Width="{DynamicResource ColorPoint.Width}"
+                                 Height="{DynamicResource ColorPoint.Width}">
+                                <Ellipse.Fill>
+                                    <MultiBinding Converter="{StaticResource nullableBoolToBrush, diag:PresentationTraceSources.TraceLevel=High}">
+                                        <Binding Path="LastNotNullLogical" />
+                                        <Binding RelativeSource="{RelativeSource Self}" />
+                                    </MultiBinding>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                            <TextBlock Name="NameText" Grid.Row="0" Grid.Column="2" Text="{Binding Name}" Padding="5" Margin="0,0,0,0"/>
+                            <TextBlock Grid.Row="0" Grid.Column="3" FontSize="8" Margin="0,0,0,0">
+                                <TextBlock.Text>
+                                    <Binding Path="WorkersState" Converter="{StaticResource workersStateToText}" />
+                                </TextBlock.Text>
+                            </TextBlock>
+                            <Image Grid.Row="0" Grid.Column="3" HorizontalAlignment="Left" Margin="4,2,5,0" Height="14" Width="14">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource visualNodeStateToBitmapImage, diag:PresentationTraceSources.TraceLevel=High}">
+                                        <Binding Path="VisualState" />
+                                        <Binding Source="{StaticResource BitmapImageDictionary}" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                        </Grid>
+                        <Grid Grid.Row="3" Grid.Column="0" Margin="0,5,0,0" DataContext="{Binding Path=UserDataContext, diag:PresentationTraceSources.TraceLevel=High}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ListBox Name="ComplexResultSubResults" Grid.Row="0" Grid.Column="0" ItemsSource="{Binding SubResults}"
+                                     MinHeight ="20" MaxHeight="100" Margin="5,0,5,5" Background="AliceBlue"
+                                      MaxWidth="320" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                                <ListBox.Style>
+                                    <Style TargetType="ListBox">
+                                        <Style.Resources>
+                                            <Style TargetType="{x:Type ScrollBar}">
+                                                <Style.Triggers>
+                                                    <Trigger Property="Orientation" Value="Horizontal">
+                                                        <Setter Property="Height" Value="8" />
+                                                        <Setter Property="MinHeight" Value="8" />
+                                                    </Trigger>
+                                                    <Trigger Property="Orientation" Value="Vertical">
+                                                        <Setter Property="Width" Value="8" />
+                                                        <Setter Property="MinWidth" Value="8" />
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Style.Resources>
+                                        <Style.Triggers>
+                                            <Trigger Property="HasItems" Value="false">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate>
+                                                            <Border Margin="5,0,5,0" Background="GhostWhite" BorderBrush="DarkGray" BorderThickness="1">
+                                                                <TextBlock Text=" - keine Daten -" Foreground="DarkGray"/>
+                                                            </Border>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ListBox.Style>
+                            </ListBox>
+                            <Border BorderBrush="AntiqueWhite" BorderThickness="1" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Padding="5,3,5,3" Margin="2">
+                                <TextBlock Name="ComplexResultComment" TextWrapping="Wrap" MaxWidth="240" HorizontalAlignment="Left"
+                                       Text="{Binding Comment}" Padding="5,0,5,0"/>
+                            </Border>
+                            <Expander Header="Parameter" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                                       MaxWidth="320">
+                                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                                    <ScrollViewer.Style>
+                                        <Style TargetType="ScrollViewer">
+                                            <Style.Resources>
+                                                <Style TargetType="{x:Type ScrollBar}">
+                                                    <Style.Triggers>
+                                                        <Trigger Property="Orientation" Value="Horizontal">
+                                                            <Setter Property="Height" Value="8" />
+                                                            <Setter Property="MinHeight" Value="8" />
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Style.Resources>
+                                        </Style>
+                                    </ScrollViewer.Style>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Name="Mode" Grid.Row="0" Grid.Column="0"
+                                       Text="{Binding Mode, StringFormat=Mode:&#x09;&#x09;&#x09;{0}}" Padding="5,0,5,0"/>
+                                        <TextBlock Name="SearchDir" Grid.Row="1" Grid.Column="0"
+                                       Text="{Binding SearchDir, StringFormat=SearchDir:&#x09;&#x09;{0}}" Padding="5,0,5,0"/>
+                                        <TextBlock Name="FileMask" Grid.Row="2" Grid.Column="0"
+                                       Text="{Binding FileMask, StringFormat=FileMask:&#x09;&#x09;{0}}" Padding="5,0,5,0"/>
+                                        <TextBlock Name="Comparer" Grid.Row="3" Grid.Column="0"
+                                       Text="{Binding Comparer, StringFormat=Comparer:&#x09;&#x09;{0}}" Padding="5,0,5,0"/>
+                                        <TextBlock Name="CountFiles" Grid.Row="4" Grid.Column="0"
+                                       Text="{Binding CountFiles, StringFormat=CountFiles:&#x09;&#x09;{0}}" Padding="5,0,5,0"/>
+                                        <TextBlock Name="CriticalFileSizeOrCount" Grid.Row="5" Grid.Column="0"
+                                       Text="{Binding CriticalFileSizeOrCount, StringFormat=CriticalFileSizeOrCount:&#x09;{0}}" Padding="5,0,5,0"/>
+                                        <TextBlock Name="tbCriticalFileAge" Grid.Row="6" Grid.Column="0" Visibility="Collapsed"
+                                       Text="{Binding CriticalFileAge, StringFormat=CriticalFileAge:&#x09;&#x09;{0}}" Padding="5,0,5,0"/>
+                                    </Grid>
+                                </ScrollViewer>
+                            </Expander>
+                        </Grid>
+                        <TextBlock Name="LastRunInfo" Grid.Row="4" Grid.Column="0"
+                                       Text="{Binding LastRunInfo, StringFormat=letzter Lauf:&#x09;&#x09;{0}}" Padding="5,0,5,5"/>
+                    </Grid>
+                </Border>
+                <DataTemplate.Triggers>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="True"/>
+                            <Condition Binding="{Binding IsSnapshotDummy}" Value="False" />
+                        </MultiDataTrigger.Conditions>
+                        <Setter
+                                                    TargetName="btnRunLogicalTaskTree"
+                                                    Property="Visibility"                     
+                                                    Value="visible" />
+                        <Setter
+                                                    TargetName="btnBreakLogicalTaskTree"
+                                                    Property="Visibility"                     
+                                                    Value="visible" />
+                    </MultiDataTrigger>
+                    <DataTrigger Binding="{Binding IsSnapshotDummy}" Value="true">
+                        <Setter TargetName="cpBar" Property="Value" Value="100" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding UserDataContext.Mode}" Value="TRACE">
+                        <Setter TargetName="tbCriticalFileAge" Property="Visibility" Value="Visible" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding UserDataContext.Mode}" Value="AGE">
+                        <Setter TargetName="tbCriticalFileAge" Property="Visibility" Value="Visible" />
+                    </DataTrigger>
+                </DataTemplate.Triggers>
+            </DataTemplate>
+        </ResourceDictionary>
+    </base:DynamicUserControlBase.Resources>
+    <ContentControl Content="{Binding}" Loaded="ContentControl_Loaded" />
+</base:DynamicUserControlBase>

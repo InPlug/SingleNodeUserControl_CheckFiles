@@ -1,0 +1,14 @@
+﻿<Window x:Class="SingleNodeUserControl_CheckFilesDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ctrl="clr-namespace:SingleNodeUserControl_CheckFiles;assembly=SingleNodeUserControl_CheckFiles"
+        Title="MainWindow" SizeToContent="WidthAndHeight" ResizeMode="NoResize">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <ctrl:SingleNodeUserControl_CheckFiles Grid.Row="0"/>
+        <Button Grid.Row="1" Click="Button_Click">Refresh</Button>
+    </Grid>
+</Window>

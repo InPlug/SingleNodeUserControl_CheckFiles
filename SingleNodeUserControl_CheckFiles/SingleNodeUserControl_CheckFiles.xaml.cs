@@ -1,6 +1,6 @@
-﻿using System.Windows;
-using Vishnu.Interchange;
+﻿using Vishnu.ViewModel;
 using UserNodeControls;
+using Vishnu.Interchange;
 
 namespace SingleNodeUserControl_CheckFiles
 {
@@ -15,37 +15,17 @@ namespace SingleNodeUserControl_CheckFiles
         public SingleNodeUserControl_CheckFiles()
         {
             InitializeComponent();
-            DynamicUserControl_ContentRendered
-              += new RoutedEventHandler(content_Rendered);
+            // DynamicUserControl_ContentRendered += new RoutedEventHandler(content_Rendered);
         }
 
         /// <summary>
-        /// Das ViewModell für das Result von FileChecker.
+        /// Konkrete Überschreibung von GetUserResultViewModel, returnt ein spezifisches ResultViewModel.
         /// </summary>
-        public ResultViewModel UserResultViewModel { get; set; }
-
-        private void ContentControl_Loaded(object sender, RoutedEventArgs e)
+        /// <param name="vishnuViewModel">Ein spezifisches ResultViewModel.</param>
+        /// <returns></returns>
+        protected override DynamicUserControlViewModelBase GetUserResultViewModel(IVishnuViewModel vishnuViewModel)
         {
-            if (this.DataContext != null)
-            {
-                this.UserResultViewModel = new ResultViewModel((IVishnuViewModel)this.DataContext);
-                ((IVishnuViewModel)this.DataContext).UserDataContext = this.UserResultViewModel;
-            }
+            return new ResultViewModel((IVishnuViewModel)this.DataContext);
         }
-
-        private void content_Rendered(object sender, RoutedEventArgs e)
-        {
-            if (this.UserResultViewModel != null)
-            {
-                this.UserResultViewModel.HandleResultPropertyChanged();
-            }
-        }
-
-        //private delegate void NoArgDelegate();
-
-        //public static void Refresh(DependencyObject obj)
-        //{
-        //  obj.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.ApplicationIdle, (NoArgDelegate)delegate	{	});
-        //}
     }
 }

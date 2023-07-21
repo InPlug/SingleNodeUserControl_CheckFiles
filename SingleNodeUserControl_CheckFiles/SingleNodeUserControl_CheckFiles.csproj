@@ -1,101 +1,60 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
- 	<PropertyGroup>
-   	<VishnuRoot>$(ProjectDir)../../..</VishnuRoot>
-   	<AssemblyRoot>$(VishnuRoot)/ReadyBin/Assemblies</AssemblyRoot>
-   	<UserAssemblyRoot>$(VishnuRoot)/ReadyBin/UserAssemblies</UserAssemblyRoot>
-	</PropertyGroup>
-	<Import Project="$(ProjectDir)../../AddOn/proj/*" Condition="exists('$(ProjectDir)../../AddOn/proj')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{4E564470-C6C4-4066-9505-00BF7BCC79D4}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SingleNodeUserControl_CheckFiles</RootNamespace>
-    <AssemblyName>SingleNodeUserControl_CheckFiles</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <PackageId>NetEti.$(AssemblyName)</PackageId>
+    <Title>$(AssemblyName) - Vishnu-UserControl für einen FileChecker</Title>
+    <Description>$(AssemblyName) - Vishnu-UserControl für einen FileChecker</Description>
+    <Authors>Erik Nagel</Authors>
+    <Company>NetEti</Company>
+    <Copyright>Copyright © $(Authors) 2015-2023</Copyright>
+    <AssemblyVersion>7.0.1.1</AssemblyVersion>
+    <FileVersion>7.0.1.1</FileVersion>
+    <PackageTags>NetEti Vishnu Plugin Control View FileChecker</PackageTags>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\SingleNodeUserControl_CheckFiles.XML</DocumentationFile>
-    <Prefer32Bit>false</Prefer32Bit>
+
+  <PropertyGroup>
+    <AssemblyRoot>$(ProjectDir)../../../ReadyBin/Assemblies</AssemblyRoot>
+    <UserAssemblyRoot>$(ProjectDir)../../../ReadyBin/UserAssemblies</UserAssemblyRoot>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="CustomProgressBar">
-      <HintPath>$(AssemblyRoot)\CustomProgressBar.dll</HintPath>
-    </Reference>
-    <Reference Include="FileChecker">
-      <HintPath>$(UserAssemblyRoot)\FileChecker.dll</HintPath>
-    </Reference>
-    <Reference Include="NetEti.MVVMini">
-      <HintPath>$(AssemblyRoot)\NetEti.MVVMini.dll</HintPath>
-    </Reference>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Vishnu.Interchange, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(AssemblyRoot)\Vishnu.Interchange.dll</HintPath>
-    </Reference>
-    <Reference Include="Vishnu.ViewModel, Version=1.8.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(AssemblyRoot)\Vishnu.ViewModel.dll</HintPath>
-    </Reference>
-    <Reference Include="Vishnu.WPF_UI, Version=2.5.7.1, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(AssemblyRoot)\Vishnu.WPF_UI.dll</HintPath>
-    </Reference>
-    <Reference Include="WindowsBase" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="ObjectToObject.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResultViewModel.cs" />
-    <Compile Include="SingleNodeUserControl_CheckFiles.xaml.cs">
-      <DependentUpon>SingleNodeUserControl_CheckFiles.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ValueConverter\PercentToBrush.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="SingleNodeUserControl_CheckFiles.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <Import Project="$(ProjectDir)../../AddOn/proj/*" Condition="exists('$(ProjectDir)../../AddOn/proj')" />
+
+	<Choose>
+  	<When Condition="!('$(TF_BUILD)' == 'true' Or '$(GITHUB_ACTIONS)' == 'true' Or '$(NETETI_CIB)' == 'true')">
+		  <ItemGroup>
+		    <Reference Include="FileChecker">
+		      <HintPath>$(UserAssemblyRoot)/FileChecker.dll</HintPath>
+		    </Reference>
+		    <Reference Include="NetEti.CustomProgressBar">
+		      <HintPath>$(AssemblyRoot)/NetEti.CustomProgressBar.dll</HintPath>
+		    </Reference>
+		    <Reference Include="NetEti.MVVMini">
+		      <HintPath>$(AssemblyRoot)/NetEti.MVVMini.dll</HintPath>
+		    </Reference>
+		    <Reference Include="Vishnu.Interchange">
+		      <HintPath>$(AssemblyRoot)/Vishnu.Interchange.dll</HintPath>
+		    </Reference>
+		    <Reference Include="Vishnu.ViewModel">
+		      <HintPath>$(AssemblyRoot)/Vishnu.ViewModel.dll</HintPath>
+		    </Reference>
+		    <Reference Include="Vishnu.WPF_UI">
+		      <HintPath>$(AssemblyRoot)/Vishnu.WPF_UI.dll</HintPath>
+		    </Reference>
+		  </ItemGroup>
+  	</When>
+    <Otherwise>
+		  <ItemGroup>
+		    <PackageReference Include="NetEti.FileChecker" Version="1.0.0" />
+		    <PackageReference Include="NetEti.CustomProgressBar" Version="1.0.0" />
+		    <PackageReference Include="NetEti.MVVMini" Version="1.0.0" />
+		    <PackageReference Include="NetEti.Vishnu.Interchange" Version="1.0.0" />
+		    <PackageReference Include="NetEti.Vishnu.ViewModel" Version="1.0.0" />
+		    <PackageReference Include="NetEti.Vishnu.WPF_UI" Version="1.0.0" />
+		  </ItemGroup>
+    </Otherwise>
+	</Choose>
+
 </Project>

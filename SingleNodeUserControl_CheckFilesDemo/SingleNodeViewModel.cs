@@ -165,7 +165,7 @@ namespace SingleNodeUserControl_CheckFilesDemo
         /// <summary>
         /// Das ReturnObject der zugeordneten LogicalNode.
         /// </summary>
-        public override Result Result
+        public override Result? Result
         {
             get
             {
@@ -273,27 +273,27 @@ namespace SingleNodeUserControl_CheckFilesDemo
         /// </summary>
         public SingleNodeViewModel()
         {
-            this.Name = "Demo-View";
+            this._name = "Demo-View";
             this.Logical = false;
             this.LastNotNullLogical = false;
             this.VisualState = VisualNodeState.Done;
             this.WorkersState = VisualNodeWorkerState.Valid;
             this.SingleNodesFinished = 100;
-            this.ProgressText = "100 %";
+            this._progressText = "100 %";
             this.IsSnapshotDummy = false;
             this._lastRun = DateTime.Now;
             this._btnRunTaskTreeRelayCommand = new RelayCommand(runTaskTreeExecute, canRunTaskTreeExecute);
             this._btnBreakTaskTreeRelayCommand = new RelayCommand(breakTaskTreeExecute, canBreakTaskTreeExecute);
-            FileCheckerReturnObject.SubResultListContainer subResults = new FileCheckerReturnObject.SubResultListContainer();
-            subResults.SubResults.Add(new FileCheckerReturnObject.SubResult() { FileName = "TestFile_1", FileAge = TimeSpan.FromMinutes(101), FileSize = 1001, LogicalResult = false });
-            subResults.SubResults.Add(new FileCheckerReturnObject.SubResult() { FileName = "TestFile_2 this is a testfile with an extraordinary wide name. It should trigger the Horizontal ScrollBar of the containing control.", FileAge = TimeSpan.FromMinutes(102), FileSize = 1002, LogicalResult = false });
-            subResults.SubResults.Add(new FileCheckerReturnObject.SubResult() { FileName = "TestFile_3", FileAge = TimeSpan.FromMinutes(103), FileSize = 1003, LogicalResult = false });
-            subResults.SubResults.Add(new FileCheckerReturnObject.SubResult() { FileName = "TestFile_4", FileAge = TimeSpan.FromMinutes(104), FileSize = 1004, LogicalResult = false });
-            subResults.SubResults.Add(new FileCheckerReturnObject.SubResult() { FileName = "TestFile_5", FileAge = TimeSpan.FromMinutes(105), FileSize = 1005, LogicalResult = false });
-            subResults.SubResults.Add(new FileCheckerReturnObject.SubResult() { FileName = "TestFile_6", FileAge = TimeSpan.FromMinutes(106), FileSize = 1006, LogicalResult = false });
-            subResults.SubResults.Add(new FileCheckerReturnObject.SubResult() { FileName = "TestFile_7", FileAge = TimeSpan.FromMinutes(107), FileSize = 1007, LogicalResult = false });
-            subResults.SubResults.Add(new FileCheckerReturnObject.SubResult() { FileName = "TestFile_8", FileAge = TimeSpan.FromMinutes(108), FileSize = 1008, LogicalResult = false });
-            subResults.SubResults.Add(new FileCheckerReturnObject.SubResult() { FileName = "TestFile_9", FileAge = TimeSpan.FromMinutes(109), FileSize = 1009, LogicalResult = false });
+            FileCheckerReturnObject.SubResultListContainer subResultListContainer = new FileCheckerReturnObject.SubResultListContainer();
+            subResultListContainer.SubResults?.Add(new FileCheckerReturnObject.SubResult() { FileName = "TestFile_1", FileAge = TimeSpan.FromMinutes(101), FileSize = 1001, LogicalResult = false });
+            subResultListContainer.SubResults?.Add(new FileCheckerReturnObject.SubResult() { FileName = "TestFile_2 this is a testfile with an extraordinary wide name. It should trigger the Horizontal ScrollBar of the containing control.", FileAge = TimeSpan.FromMinutes(102), FileSize = 1002, LogicalResult = false });
+            subResultListContainer.SubResults?.Add(new FileCheckerReturnObject.SubResult() { FileName = "TestFile_3", FileAge = TimeSpan.FromMinutes(103), FileSize = 1003, LogicalResult = false });
+            subResultListContainer.SubResults?.Add(new FileCheckerReturnObject.SubResult() { FileName = "TestFile_4", FileAge = TimeSpan.FromMinutes(104), FileSize = 1004, LogicalResult = false });
+            subResultListContainer.SubResults?.Add(new FileCheckerReturnObject.SubResult() { FileName = "TestFile_5", FileAge = TimeSpan.FromMinutes(105), FileSize = 1005, LogicalResult = false });
+            subResultListContainer.SubResults?.Add(new FileCheckerReturnObject.SubResult() { FileName = "TestFile_6", FileAge = TimeSpan.FromMinutes(106), FileSize = 1006, LogicalResult = false });
+            subResultListContainer.SubResults?.Add(new FileCheckerReturnObject.SubResult() { FileName = "TestFile_7", FileAge = TimeSpan.FromMinutes(107), FileSize = 1007, LogicalResult = false });
+            subResultListContainer.SubResults?.Add(new FileCheckerReturnObject.SubResult() { FileName = "TestFile_8", FileAge = TimeSpan.FromMinutes(108), FileSize = 1008, LogicalResult = false });
+            subResultListContainer.SubResults?.Add(new FileCheckerReturnObject.SubResult() { FileName = "TestFile_9", FileAge = TimeSpan.FromMinutes(109), FileSize = 1009, LogicalResult = false });
             this._returnObject = new FileCheckerReturnObject()
             {
                 LogicalResult = false,
@@ -305,7 +305,7 @@ namespace SingleNodeUserControl_CheckFilesDemo
                 CountFiles = 3,
                 CriticalFileSizeOrCount = 2,
                 CriticalFileAge = TimeSpan.FromSeconds(20),
-                SubResults = subResults,
+                SubResults = subResultListContainer,
                 Comment = "Dies ist ein Test für FileChecker und sein UserNodeControl."
             };
             this.Result = new Result("TestResult", true, NodeState.Finished, NodeLogicalState.Done, this._returnObject);
@@ -328,7 +328,7 @@ namespace SingleNodeUserControl_CheckFilesDemo
             this.RaisePropertyChanged("ButtonBreakText");
         }
 
-        private Vishnu.Interchange.Result _result;
+        private Vishnu.Interchange.Result? _result;
         private FileCheckerReturnObject _returnObject;
         private bool? _logical;
         private bool? _lastNotNullLogical;
@@ -342,7 +342,7 @@ namespace SingleNodeUserControl_CheckFilesDemo
         private DateTime _lastRun;
         private bool _isSnapshotDummy;
 
-        private void runTaskTreeExecute(object parameter)
+        private void runTaskTreeExecute(object? parameter)
         {
             this._lastRun = DateTime.Now;
             this.Logical = true;
@@ -359,7 +359,7 @@ namespace SingleNodeUserControl_CheckFilesDemo
             return true;
         }
 
-        private void breakTaskTreeExecute(object parameter)
+        private void breakTaskTreeExecute(object? parameter)
         {
             this.Logical = null;
             this.LastNotNullLogical = null;

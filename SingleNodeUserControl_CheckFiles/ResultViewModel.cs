@@ -2,7 +2,6 @@
 using Vishnu.Interchange;
 using System.Collections.ObjectModel;
 using FileChecker;
-using System.Linq;
 using Vishnu.ViewModel;
 
 namespace UserNodeControls
@@ -49,7 +48,7 @@ namespace UserNodeControls
             /// Der Name einer gelisteten Datei.
             /// (i.d.R "Anzahl").
             /// </summary>
-            public string FileName
+            public string? FileName
             {
                 get
                 {
@@ -68,7 +67,7 @@ namespace UserNodeControls
             /// <summary>
             /// Die Größe einer Detei.
             ///  </summary>
-            public long FileSize
+            public long? FileSize
             {
                 get
                 {
@@ -88,7 +87,7 @@ namespace UserNodeControls
             /// Die Zeitspanne seit der letzten Änderung einer Detei oder
             /// die Dauer der Überwachung dieser Datei (Trace = true).
             ///  </summary>
-            public TimeSpan FileAge
+            public TimeSpan? FileAge
             {
                 get
                 {
@@ -112,13 +111,13 @@ namespace UserNodeControls
             public override string ToString()
             {
                 return String.Format("{0}: {1}, {2}", this.FileName, this.FileSize.ToString(),
-                  this.FileAge.ToString(@"d\d\:h\h\:m\m\:s\s", System.Globalization.CultureInfo.InvariantCulture));
+                  this.FileAge?.ToString(@"d\d\:h\h\:m\m\:s\s", System.Globalization.CultureInfo.InvariantCulture));
             }
 
             private bool? _logicalResult;
-            private string _fileName;
-            private long _fileSize;
-            private TimeSpan _fileAge;
+            private string? _fileName;
+            private long? _fileSize;
+            private TimeSpan? _fileAge;
         }
 
         /// <summary>
@@ -137,7 +136,7 @@ namespace UserNodeControls
         /// Arbeits-Modus:
         /// SIZE=Dateigröße, COUNT=Datei-Anzahl, AGE=Zeit seit letzter Änderung, TRACE=Zeit der Überwachung.
         /// </summary>
-        public string Mode
+        public string? Mode
         {
             get
             {
@@ -160,7 +159,7 @@ namespace UserNodeControls
         /// <summary>
         /// Das Verzeichnis aus dem übergebenen Suchpfad. 
         ///  </summary>
-        public string SearchDir
+        public string? SearchDir
         {
             get
             {
@@ -172,7 +171,7 @@ namespace UserNodeControls
         /// Der Dateiname aus dem übergebenen Suchpfad. 
         /// Der Dateiname kann ein regulärer Ausdruck sein.
         ///  </summary>
-        public string FileMask
+        public string? FileMask
         {
             get
             {
@@ -183,7 +182,7 @@ namespace UserNodeControls
         /// <summary>
         /// Übergebener Vergleichsoperator (&lt; oder &gt;).
         /// </summary>
-        public string Comparer
+        public string? Comparer
         {
             get
             {
@@ -220,7 +219,7 @@ namespace UserNodeControls
         /// Klartext-Informationen zur Prüfroutine
         /// (was die Routine prüft).
         ///  </summary>
-        public string Comment
+        public string? Comment
         {
             get
             {
@@ -260,12 +259,15 @@ namespace UserNodeControls
             =>
             {
                 this.SubResults.Clear();
-                FileCheckerReturnObject.SubResultListContainer subResultListContainer =
-              this.GetResultProperty<FileCheckerReturnObject.SubResultListContainer>(typeof(FileCheckerReturnObject), "SubResults");
-                if (subResultListContainer != null)
+                //FileCheckerReturnObject.SubResultListContainer? subResultListContainer =
+                //    this.GetResultProperty<FileCheckerReturnObject.SubResultListContainer>(typeof(FileCheckerReturnObject.SubResultListContainer), "SubResults");
+                FileCheckerReturnObject.SubResultListContainer? subResultListContainer =
+                    this.GetResultProperty<FileCheckerReturnObject.SubResultListContainer>(
+                        typeof(FileCheckerReturnObject), "SubResults");
+                if (subResultListContainer?.SubResults != null)
                 {
-              // foreach (FileCheckerReturnObject.SubResult subResult in subResultListContainer.SubResults)
-              foreach (FileCheckerReturnObject.SubResult subResult in subResultListContainer.SubResults.ToList())
+                    // foreach (FileCheckerReturnObject.SubResult subResult in subResultListContainer.SubResults)
+                    foreach (FileCheckerReturnObject.SubResult subResult in subResultListContainer.SubResults)
                     {
                         SubResultViewModel subResultViewModel = new SubResultViewModel();
                         this.SubResults.Add(subResultViewModel);
@@ -298,7 +300,7 @@ namespace UserNodeControls
             this.RaisePropertyChanged("Comment");
         }
 
-        private void parentViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void parentViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "Result")
             {

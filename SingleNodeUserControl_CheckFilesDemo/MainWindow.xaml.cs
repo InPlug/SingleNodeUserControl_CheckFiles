@@ -3,7 +3,7 @@
 namespace SingleNodeUserControl_CheckFilesDemo
 {
     /// <summary>
-    /// Interaktionslogik für MainWindow.xaml
+    /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
@@ -15,7 +15,7 @@ namespace SingleNodeUserControl_CheckFilesDemo
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            (this.DataContext as SingleNodeViewModel).RaiseAllProperties();
+            ((SingleNodeViewModel)this.DataContext).RaiseAllProperties();
         }
     }
 }

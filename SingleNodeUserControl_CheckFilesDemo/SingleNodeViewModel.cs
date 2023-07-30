@@ -1,6 +1,7 @@
 ﻿using FileChecker;
 using NetEti.MVVMini;
 using System;
+using System.Windows;
 using System.Windows.Input;
 using Vishnu.Interchange;
 using Vishnu.ViewModel;
@@ -209,6 +210,19 @@ namespace SingleNodeUserControl_CheckFilesDemo
         }
 
         /// <summary>
+        /// Liefert das Ergebnis von GetToolTipInfo().
+        /// Diese Routine zeigt per Default auf NextRunInfoAndResult,
+        /// kann aber gegebenenfalls überschrieben werden.
+        /// </summary>
+        public string ToolTipInfo
+        {
+            get
+            {
+                return this.GetToolTipInfo();
+            }
+        }
+
+        /// <summary>
         /// True zeigt an, dass es sich um einen Knoten innerhalb
         /// eines geladenen Snapshots handelt.
         /// </summary>
@@ -269,6 +283,21 @@ namespace SingleNodeUserControl_CheckFilesDemo
         public ICommand BreakLogicalTaskTree { get { return this._btnBreakTaskTreeRelayCommand; } }
 
         /// <summary>
+        /// Command für den Copy-Button im ToolTip des Controls.
+        /// </summary>
+        public ICommand CopyToolTipInfoToClipboard { get { return this._btnCopyToolTipInfoToClipboardCommand; } }
+
+        /// <summary>
+        /// Liefert das Ergebnis für die Property ToolTipInfo.
+        /// Diese Routine zeigt per Default auf NextRunInfoAndResult,
+        /// kann aber gegebenenfalls überschrieben werden.
+        /// </summary>
+        protected virtual string GetToolTipInfo()
+        {
+            return this.NextRunInfoAndResult;
+        }
+
+        /// <summary>
         /// Standard Konstruktor - setzt alle Demo-Properties.
         /// </summary>
         public SingleNodeViewModel()
@@ -284,6 +313,7 @@ namespace SingleNodeUserControl_CheckFilesDemo
             this._lastRun = DateTime.Now;
             this._btnRunTaskTreeRelayCommand = new RelayCommand(runTaskTreeExecute, canRunTaskTreeExecute);
             this._btnBreakTaskTreeRelayCommand = new RelayCommand(breakTaskTreeExecute, canBreakTaskTreeExecute);
+            this._btnCopyToolTipInfoToClipboardCommand = new RelayCommand(this.CmdBtnCopy_Executed, this.CmdBtnCopy_CanExecute);
             FileCheckerReturnObject.SubResultListContainer subResultListContainer = new FileCheckerReturnObject.SubResultListContainer();
             subResultListContainer.SubResults?.Add(new FileCheckerReturnObject.SubResult() { FileName = "TestFile_1", FileAge = TimeSpan.FromMinutes(101), FileSize = 1001, LogicalResult = false });
             subResultListContainer.SubResults?.Add(new FileCheckerReturnObject.SubResult() { FileName = "TestFile_2 this is a testfile with an extraordinary wide name. It should trigger the Horizontal ScrollBar of the containing control.", FileAge = TimeSpan.FromMinutes(102), FileSize = 1002, LogicalResult = false });
@@ -339,6 +369,7 @@ namespace SingleNodeUserControl_CheckFilesDemo
         private VisualNodeWorkerState _workersState;
         private RelayCommand _btnRunTaskTreeRelayCommand;
         private RelayCommand _btnBreakTaskTreeRelayCommand;
+        private RelayCommand _btnCopyToolTipInfoToClipboardCommand;
         private DateTime _lastRun;
         private bool _isSnapshotDummy;
 
@@ -371,6 +402,16 @@ namespace SingleNodeUserControl_CheckFilesDemo
         }
 
         private bool canBreakTaskTreeExecute()
+        {
+            return true;
+        }
+
+        private void CmdBtnCopy_Executed(object? parameter)
+        {
+            Clipboard.SetText(this.NextRunInfoAndResult);
+        }
+
+        private bool CmdBtnCopy_CanExecute()
         {
             return true;
         }

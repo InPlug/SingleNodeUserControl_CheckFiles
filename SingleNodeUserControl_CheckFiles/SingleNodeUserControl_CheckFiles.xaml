@@ -37,7 +37,7 @@
             </x:Code>
             <DataTemplate DataType="{x:Type vm:VishnuViewModelBase}">
                 <Border Name="ItemBorder" Background="Transparent" MouseDown="ItemBorder_MouseDown" Visibility="{Binding Visibility}">
-                    <Grid Name="MainGrid" ToolTip="{Binding NextRunInfoAndResult}" ToolTipService.ShowDuration="30000" ToolTipService.InitialShowDelay="1400"
+                    <Grid Name="MainGrid"  ToolTip="{StaticResource cmToolTip}"
                           ContextMenu="{StaticResource cmContextMenu}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />

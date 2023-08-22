@@ -37,7 +37,7 @@
             </x:Code>
             <DataTemplate DataType="{x:Type vm:VishnuViewModelBase}">
                 <Border Name="ItemBorder" Background="Transparent" MouseDown="ItemBorder_MouseDown" Visibility="{Binding Visibility}">
-                    <Grid Name="MainGrid"  ToolTip="{StaticResource cmToolTip}"
+                    <Grid Name="MainGrid"
                           ContextMenu="{StaticResource cmContextMenu}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -51,7 +51,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <Grid Grid.Row="0" Grid.Column="0" Margin="0,5,0,0">
+                        <Grid Grid.Row="0" Grid.Column="0" Margin="0,5,0,0" ToolTip="{StaticResource cmToolTip}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
@@ -224,7 +224,7 @@
                                 </ScrollViewer>
                             </Expander>
                         </Grid>
-                        <TextBlock Name="LastRunInfo" Grid.Row="4" Grid.Column="0"
+                        <TextBlock Name="LastRunInfo" Grid.Row="4" Grid.Column="0" ToolTip="{StaticResource cmToolTip}"
                                        Text="{Binding LastRunInfo, StringFormat=letzter Lauf:&#x09;&#x09;{0}}" Padding="5,0,5,5"/>
                     </Grid>
                 </Border>

@@ -65,7 +65,7 @@ namespace UserNodeControls
             }
 
             /// <summary>
-            /// Die Größe einer Detei.
+            /// Die Größe einer Datei.
             ///  </summary>
             public long? FileSize
             {
@@ -84,7 +84,7 @@ namespace UserNodeControls
             }
 
             /// <summary>
-            /// Die Zeitspanne seit der letzten Änderung einer Detei oder
+            /// Die Zeitspanne seit der letzten Änderung einer Datei oder
             /// die Dauer der Überwachung dieser Datei (Trace = true).
             ///  </summary>
             public TimeSpan? FileAge
